@@ -21,7 +21,7 @@ const popularCurrencies: Currency[] = [
   { code: 'CNY', name: 'Yuan', country: 'Tiongkok' },
 ];
 
-export default function CurrencyConverter() {
+const CurrencyConverter = () => {
   const [amount, setAmount] = useState<number>(0);
   const [fromCurrency, setFromCurrency] = useState<string>('USD');
   const [toCurrency, setToCurrency] = useState<string>('EUR');

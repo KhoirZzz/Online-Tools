@@ -194,7 +194,11 @@ type UnitOption = {
   label: string;
 };
 
-type ConversionFunction = (value: number, from: string, to: string) => number;
+type UnitConversion = {
+  fromUnit: string;
+  toUnit: string;
+  value: number;
+};
 
 export default function UnitsPage() {
   const [selectedCategory, setSelectedCategory] = useState<UnitCategory>(UNIT_CATEGORIES[0]);
@@ -206,11 +210,16 @@ export default function UnitsPage() {
   const [selectedUnit, setSelectedUnit] = useState<UnitOption | null>(null);
 
   const handleConvert = () => {
-    const value = parseFloat(amount);
-    if (!isNaN(value)) {
-      const converted = selectedCategory.convert(value, fromUnit, toUnit);
-      setResult(converted);
+    let convertedValue = inputValue;
+    
+    // Contoh logika konversi sederhana
+    if (fromUnit === 'km' && toUnit === 'm') {
+      convertedValue = inputValue * 1000;
+    } else if (fromUnit === 'm' && toUnit === 'km') {
+      convertedValue = inputValue / 1000;
     }
+    
+    setResult(convertedValue);
   };
 
   const handleSwap = () => {
