@@ -201,20 +201,6 @@ export default function UnitsPage() {
     handleConvert();
   };
 
-  const handleConversion = (value: number, from: string, to: string) => {
-    let convertedValue = value;
-    
-    // Contoh logika konversi sederhana
-    if (from === 'km' && to === 'm') {
-      convertedValue = value * 1000;
-    } else if (from === 'm' && to === 'km') {
-      convertedValue = value / 1000;
-    }
-    
-    setResult(convertedValue);
-    return convertedValue;
-  };
-
   const formatNumber = (num: number): string => {
     if (num === 0) return '0';
     const absNum = Math.abs(num);

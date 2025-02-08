@@ -79,7 +79,7 @@ const CurrencyConverter = () => {
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [handleConvert]); // handleConvert already includes all necessary dependencies
+  }, [amount, fromCurrency, toCurrency, handleConvert]);
 
   // Input handlers
   const handleAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
