@@ -15,7 +15,7 @@ import {
 type UnitCategory = {
   id: string;
   name: string;
-  icon: React.ForwardRefExoticComponent<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   units: { value: string; label: string; }[];
   convert: (value: number, from: string, to: string) => number;
 };
@@ -180,46 +180,19 @@ const UNIT_CATEGORIES: UnitCategory[] = [
   },
 ];
 
-// Definisikan tipe yang spesifik untuk icon
-type IconProps = React.ForwardRefExoticComponent<
-  Omit<React.SVGProps<SVGSVGElement>, "ref"> & {
-    title?: string;
-    titleId?: string;
-  } & React.RefAttributes<SVGSVGElement>
->;
-
-// Definisikan tipe yang spesifik untuk unit
-type UnitOption = {
-  value: string;
-  label: string;
-};
-
-type UnitConversion = {
-  fromUnit: string;
-  toUnit: string;
-  value: number;
-};
-
 export default function UnitsPage() {
   const [selectedCategory, setSelectedCategory] = useState<UnitCategory>(UNIT_CATEGORIES[0]);
   const [amount, setAmount] = useState<string>('1');
   const [fromUnit, setFromUnit] = useState<string>('km');
   const [toUnit, setToUnit] = useState<string>('m');
-  const [inputValue, setInputValue] = useState<number>(0);
   const [result, setResult] = useState<number | null>(null);
-  const [selectedUnit, setSelectedUnit] = useState<UnitOption | null>(null);
 
   const handleConvert = () => {
-    let convertedValue = inputValue;
-    
-    // Contoh logika konversi sederhana
-    if (fromUnit === 'km' && toUnit === 'm') {
-      convertedValue = inputValue * 1000;
-    } else if (fromUnit === 'm' && toUnit === 'km') {
-      convertedValue = inputValue / 1000;
+    const numAmount = parseFloat(amount);
+    if (!isNaN(numAmount)) {
+      const convertedValue = selectedCategory.convert(numAmount, fromUnit, toUnit);
+      setResult(convertedValue);
     }
-    
-    setResult(convertedValue);
   };
 
   const handleSwap = () => {

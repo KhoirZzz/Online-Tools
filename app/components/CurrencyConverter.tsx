@@ -207,4 +207,6 @@ const CurrencyConverter = () => {
       ) : null}
     </div>
   );
-} 
+}
+
+export default CurrencyConverter; 
