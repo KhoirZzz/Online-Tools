@@ -186,25 +186,13 @@ type UnitOption = {
   label: string;
 };
 
-// Definisikan tipe yang spesifik untuk menggantikan any
-type ConversionUnit = {
-  value: number;
-  from: string;
-  to: string;
-};
-
-// Implementasi fungsi konversi yang benar
-const handleUnitConversion = ({ value, from, to }: ConversionUnit) => {
-  // Implementasi konversi sederhana sebagai contoh
-  const result = value; // Tambahkan logika konversi yang sesuai
-  return result;
-};
+type ConversionFunction = (value: number, from: string, to: string) => number;
 
 export default function UnitsPage() {
   const [selectedCategory, setSelectedCategory] = useState<UnitCategory>(UNIT_CATEGORIES[0]);
   const [amount, setAmount] = useState<string>('1');
-  const [fromUnit, setFromUnit] = useState<string>('');
-  const [toUnit, setToUnit] = useState<string>('');
+  const [fromUnit, setFromUnit] = useState<string>('km');
+  const [toUnit, setToUnit] = useState<string>('m');
   const [inputValue, setInputValue] = useState<number>(0);
   const [result, setResult] = useState<number | null>(null);
   const [selectedUnit, setSelectedUnit] = useState<UnitOption | null>(null);
@@ -223,8 +211,7 @@ export default function UnitsPage() {
     handleConvert();
   };
 
-  const handleConversion = (value: number, from: string, to: string) => {
-    // Implementasi konversi yang sebenarnya
+  const handleConversion: ConversionFunction = (value, from, to) => {
     let convertedValue = value;
     
     // Contoh logika konversi sederhana
@@ -233,9 +220,9 @@ export default function UnitsPage() {
     } else if (from === 'm' && to === 'km') {
       convertedValue = value / 1000;
     }
-    // Tambahkan logika konversi lainnya sesuai kebutuhan
     
     setResult(convertedValue);
+    return convertedValue;
   };
 
   const formatNumber = (num: number): string => {

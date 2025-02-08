@@ -95,19 +95,20 @@ export default function CurrencyConverter() {
   }, []);
 
   useEffect(() => {
-    if (amount && fromCurrency && toCurrency) {
-      const doConversion = async () => {
-        try {
-          const response = await fetch(`/api/convert?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`);
-          const data = await response.json();
-          setResult(data.result);
-        } catch (error) {
-          console.error('Error converting currency:', error);
-          setResult(null);
-        }
-      };
-      doConversion();
-    }
+    const doConversion = async () => {
+      if (!amount || !fromCurrency || !toCurrency) return;
+      
+      try {
+        const response = await fetch(`/api/convert?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`);
+        const data = await response.json();
+        setResult(data.result);
+      } catch (error) {
+        console.error('Error converting currency:', error);
+        setResult(null);
+      }
+    };
+    
+    doConversion();
   }, [amount, fromCurrency, toCurrency]);
 
   return (
