@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearch } from '../context/SearchContext';
 import { useRouter } from 'next/navigation';
 import { 
@@ -131,7 +131,7 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [activeIndex, onClose]); // Tambahkan dependencies yang dibutuhkan
+  }, [activeIndex, onClose, handleKeyDown]); // Tambahkan handleKeyDown ke dependencies
 
   useEffect(() => {
     if (searchQuery) {
