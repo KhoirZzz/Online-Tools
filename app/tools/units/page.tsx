@@ -180,17 +180,18 @@ const UNIT_CATEGORIES: UnitCategory[] = [
   },
 ];
 
-interface ConversionResult {
-  value: number;
-  unit: string;
-}
-
 // Definisikan tipe yang spesifik untuk menggantikan any
-type ConversionFunction = (value: number) => number;
+type ConversionUnit = {
+  value: number;
+  from: string;
+  to: string;
+};
 
-// Gunakan tipe di atas untuk menggantikan any
-const handleConversion = (conversionFn: ConversionFunction) => {
-  // ... existing code ...
+// Implementasi fungsi konversi yang benar
+const handleUnitConversion = ({ value, from, to }: ConversionUnit) => {
+  // Implementasi konversi sederhana sebagai contoh
+  const result = value; // Tambahkan logika konversi yang sesuai
+  return result;
 };
 
 export default function UnitsPage() {

@@ -94,14 +94,20 @@ export default function CurrencyConverter() {
     setToCurrency(e.target.value);
   }, []);
 
-  useEffect(() => {
-    const convertCurrency = async () => {
-      // ... existing code ...
-    };
-    if (amount && fromCurrency && toCurrency) {
-      convertCurrency();
+  // Gunakan useCallback untuk memoize fungsi konversi
+  const convertCurrency = useCallback(async () => {
+    if (!amount || !fromCurrency || !toCurrency) return;
+    
+    try {
+      // ... existing conversion logic ...
+    } catch (error) {
+      console.error('Error converting currency:', error);
     }
   }, [amount, fromCurrency, toCurrency]);
+
+  useEffect(() => {
+    convertCurrency();
+  }, [convertCurrency]);
 
   return (
     <div className="max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">

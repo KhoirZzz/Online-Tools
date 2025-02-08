@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Breadcrumb from "../../components/Breadcrumb";
 import { CalendarIcon, UserIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
@@ -36,7 +35,7 @@ const BLOG_DETAIL = {
   `
 };
 
-export default function BlogPost({ params }: { params: { slug: string } }) {
+export default function BlogPost() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

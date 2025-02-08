@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSearch } from '../context/SearchContext';
 import { useRouter } from 'next/navigation';
 import { 
@@ -27,8 +27,8 @@ type SearchHistory = {
 
 const MAX_HISTORY = 5; // Maksimum riwayat yang disimpan
 
-export default function SearchModal() {
-  const { isSearchOpen, setIsSearchOpen, searchQuery, setSearchQuery } = useSearch();
+export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const { searchQuery, setSearchQuery } = useSearch();
   const [results, setResults] = useState<SearchResult[]>([]);
   const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]);
   const router = useRouter();
@@ -103,16 +103,12 @@ export default function SearchModal() {
   // Pindahkan useHistoryItem ke luar callback
   const historyItem = useHistoryItem;
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Gunakan historyItem di sini
-    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-      e.preventDefault();
-      setIsSearchOpen(true);
-    }
+  // Pindahkan handleKeyDown ke dalam useCallback
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
-      setIsSearchOpen(false);
+      onClose();
     }
-  };
+  }, [onClose]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -133,11 +129,11 @@ export default function SearchModal() {
   const handleSelect = (result: SearchResult) => {
     saveToHistory(searchQuery);
     router.push(result.url);
-    setIsSearchOpen(false);
+    onClose();
     setSearchQuery('');
   };
 
-  if (!isSearchOpen) return null;
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50">
@@ -155,7 +151,7 @@ export default function SearchModal() {
               autoFocus
             />
             <button
-              onClick={() => setIsSearchOpen(false)}
+              onClick={onClose}
               className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
             >
               <XMarkIcon className="h-5 w-5" />
