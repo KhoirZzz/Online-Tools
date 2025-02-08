@@ -36,10 +36,7 @@ const BLOG_DETAIL = {
   `
 };
 
-export default function BlogPost({ params: { _slug } }: { params: { slug: string } }) {
-  const params = useParams();
-  const slug = params.slug;
-
+export default function BlogPost({ params }: { params: { slug: string } }) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

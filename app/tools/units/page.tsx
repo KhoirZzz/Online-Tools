@@ -185,6 +185,14 @@ interface ConversionResult {
   unit: string;
 }
 
+// Definisikan tipe yang spesifik untuk menggantikan any
+type ConversionFunction = (value: number) => number;
+
+// Gunakan tipe di atas untuk menggantikan any
+const handleConversion = (conversionFn: ConversionFunction) => {
+  // ... existing code ...
+};
+
 export default function UnitsPage() {
   const [selectedCategory, setSelectedCategory] = useState<UnitCategory>(UNIT_CATEGORIES[0]);
   const [amount, setAmount] = useState<string>('1');

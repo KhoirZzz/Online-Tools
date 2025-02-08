@@ -12,7 +12,6 @@ export default function CalculatorPage() {
   const [display, setDisplay] = useState('0');
   const [equation, setEquation] = useState('');
   const [mode, setMode] = useState<CalculatorMode>('standard');
-  const [_memory, _setMemory] = useState<number>(0);
 
   const handleNumber = (num: string) => {
     if (display === '0') {
@@ -51,7 +50,7 @@ export default function CalculatorPage() {
       const result = eval(equation + display);
       setDisplay(Number(result.toFixed(8)).toString());
       setEquation('');
-    } catch (_error) {
+    } catch {
       setDisplay('Error');
     }
   };
@@ -91,7 +90,7 @@ export default function CalculatorPage() {
       }
 
       setDisplay(Number(result.toFixed(8)).toString());
-    } catch (_error) {
+    } catch {
       setDisplay('Error');
     }
   };

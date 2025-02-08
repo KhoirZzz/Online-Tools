@@ -32,7 +32,7 @@ const EVENT_COLORS = [
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [_selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState<Event[]>(() => {
     if (typeof window !== 'undefined') {
       const savedEvents = localStorage.getItem('calendar-events');

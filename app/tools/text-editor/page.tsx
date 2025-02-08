@@ -37,7 +37,7 @@ export default function TextEditorPage() {
     try {
       await navigator.clipboard.writeText(text);
       alert('Teks berhasil disalin!');
-    } catch (_err) {
+    } catch {
       alert('Gagal menyalin teks');
     }
   };

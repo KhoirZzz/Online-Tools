@@ -98,8 +98,10 @@ export default function CurrencyConverter() {
     const convertCurrency = async () => {
       // ... existing code ...
     };
-    convertCurrency();
-  }, [amount, fromCurrency, toCurrency]); // Tambahkan dependencies yang kurang
+    if (amount && fromCurrency && toCurrency) {
+      convertCurrency();
+    }
+  }, [amount, fromCurrency, toCurrency]);
 
   return (
     <div className="max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">
