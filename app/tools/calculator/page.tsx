@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Breadcrumb from "../../components/Breadcrumb";
 import { 
   BackspaceIcon,
-  ArrowPathIcon
 } from "@heroicons/react/24/outline";
 
 type CalculatorMode = 'standard' | 'scientific';
@@ -13,7 +12,7 @@ export default function CalculatorPage() {
   const [display, setDisplay] = useState('0');
   const [equation, setEquation] = useState('');
   const [mode, setMode] = useState<CalculatorMode>('standard');
-  const [memory, setMemory] = useState<number>(0);
+  const [_memory, _setMemory] = useState<number>(0);
 
   const handleNumber = (num: string) => {
     if (display === '0') {
@@ -52,7 +51,7 @@ export default function CalculatorPage() {
       const result = eval(equation + display);
       setDisplay(Number(result.toFixed(8)).toString());
       setEquation('');
-    } catch (error) {
+    } catch (_error) {
       setDisplay('Error');
     }
   };
@@ -92,7 +91,7 @@ export default function CalculatorPage() {
       }
 
       setDisplay(Number(result.toFixed(8)).toString());
-    } catch (error) {
+    } catch (_error) {
       setDisplay('Error');
     }
   };

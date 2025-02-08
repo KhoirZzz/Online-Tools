@@ -180,6 +180,11 @@ const UNIT_CATEGORIES: UnitCategory[] = [
   },
 ];
 
+interface ConversionResult {
+  value: number;
+  unit: string;
+}
+
 export default function UnitsPage() {
   const [selectedCategory, setSelectedCategory] = useState<UnitCategory>(UNIT_CATEGORIES[0]);
   const [amount, setAmount] = useState<string>('1');

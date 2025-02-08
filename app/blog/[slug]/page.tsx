@@ -36,7 +36,7 @@ const BLOG_DETAIL = {
   `
 };
 
-export default function BlogDetailPage() {
+export default function BlogPost({ params: { _slug } }: { params: { slug: string } }) {
   const params = useParams();
   const slug = params.slug;
 

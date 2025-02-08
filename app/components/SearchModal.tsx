@@ -100,17 +100,21 @@ export default function SearchModal() {
     setSearchQuery(query);
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setIsSearchOpen(true);
-      }
-      if (e.key === 'Escape') {
-        setIsSearchOpen(false);
-      }
-    };
+  // Pindahkan useHistoryItem ke luar callback
+  const historyItem = useHistoryItem;
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Gunakan historyItem di sini
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      setIsSearchOpen(true);
+    }
+    if (e.key === 'Escape') {
+      setIsSearchOpen(false);
+    }
+  };
+
+  useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [setIsSearchOpen]);
@@ -178,7 +182,7 @@ export default function SearchModal() {
                       className="flex items-center justify-between px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg group"
                     >
                       <button
-                        onClick={() => useHistoryItem(item.query)}
+                        onClick={() => historyItem(item.query)}
                         className="flex items-center space-x-3 text-gray-600 dark:text-gray-300"
                       >
                         <ClockIcon className="h-4 w-4" />

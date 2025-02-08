@@ -7,6 +7,7 @@ import {
   EnvelopeIcon,
   GlobeAltIcon,
 } from "@heroicons/react/24/outline";
+import Image from 'next/image'
 
 const TEAM_MEMBERS = [
   {
@@ -105,9 +106,11 @@ export default function AboutPage() {
                   key={index}
                   className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center"
                 >
-                  <img
+                  <Image
                     src={member.image}
                     alt={member.name}
+                    width={96}
+                    height={96}
                     className="w-24 h-24 mx-auto rounded-full bg-gray-100 dark:bg-gray-700"
                   />
                   <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">

@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { formatDate } from '../utils/dateFormatter';
 import { fetchCurrencyRate } from '../utils/api';
-import type { Currency, CurrencyResponse } from '../types/currency';
+import type { Currency } from '../types/currency';
 
 const popularCurrencies: Currency[] = [
   { code: 'IDR', name: 'Rupiah', country: 'Indonesia' },
@@ -93,6 +93,13 @@ export default function CurrencyConverter() {
   const handleToCurrencyChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     setToCurrency(e.target.value);
   }, []);
+
+  useEffect(() => {
+    const convertCurrency = async () => {
+      // ... existing code ...
+    };
+    convertCurrency();
+  }, [amount, fromCurrency, toCurrency]); // Tambahkan dependencies yang kurang
 
   return (
     <div className="max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">

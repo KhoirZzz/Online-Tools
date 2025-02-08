@@ -2,7 +2,6 @@
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useSearch } from "./context/SearchContext";
-import SearchBar from "./components/SearchBar";
 import SearchHistory from "./components/SearchHistory";
 import Breadcrumb from "./components/Breadcrumb";
 
