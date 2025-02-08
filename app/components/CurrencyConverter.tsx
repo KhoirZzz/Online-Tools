@@ -22,9 +22,9 @@ const popularCurrencies: Currency[] = [
 ];
 
 export default function CurrencyConverter() {
-  const [amount, setAmount] = useState('1');
-  const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('IDR');
+  const [amount, setAmount] = useState<number>(0);
+  const [fromCurrency, setFromCurrency] = useState<string>('USD');
+  const [toCurrency, setToCurrency] = useState<string>('EUR');
   const [result, setResult] = useState<number | null>(null);
   const [rate, setRate] = useState<number | null>(null);
   const [date, setDate] = useState<string | null>(null);
@@ -44,7 +44,7 @@ export default function CurrencyConverter() {
   }, []);
 
   const handleConvert = useCallback(async () => {
-    const numAmount = parseFloat(amount);
+    const numAmount = parseFloat(amount.toString());
     
     if (!amount || isNaN(numAmount) || numAmount <= 0) {
       setError('Masukkan jumlah yang valid');
@@ -83,7 +83,7 @@ export default function CurrencyConverter() {
 
   // Input handlers
   const handleAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value);
+    setAmount(Number(e.target.value));
   }, []);
 
   const handleFromCurrencyChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -94,22 +94,22 @@ export default function CurrencyConverter() {
     setToCurrency(e.target.value);
   }, []);
 
-  useEffect(() => {
-    const doConversion = async () => {
-      if (!amount || !fromCurrency || !toCurrency) return;
-      
-      try {
-        const response = await fetch(`/api/convert?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`);
-        const data = await response.json();
-        setResult(data.result);
-      } catch (error) {
-        console.error('Error converting currency:', error);
-        setResult(null);
-      }
-    };
+  const handleConversion = useCallback(async () => {
+    if (!amount || !fromCurrency || !toCurrency) return;
     
-    doConversion();
+    try {
+      const response = await fetch(`/api/convert?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`);
+      const data = await response.json();
+      setResult(data.result);
+    } catch (error) {
+      console.error('Error converting currency:', error);
+      setResult(null);
+    }
   }, [amount, fromCurrency, toCurrency]);
+
+  useEffect(() => {
+    handleConversion();
+  }, [handleConversion]);
 
   return (
     <div className="max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">

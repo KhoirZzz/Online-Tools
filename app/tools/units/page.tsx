@@ -211,7 +211,7 @@ export default function UnitsPage() {
     handleConvert();
   };
 
-  const handleConversion: ConversionFunction = (value, from, to) => {
+  const handleConversion = (value: number, from: string, to: string) => {
     let convertedValue = value;
     
     // Contoh logika konversi sederhana
