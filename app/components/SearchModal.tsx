@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useSearch } from '../context/SearchContext';
 import { useRouter } from 'next/navigation';
 import { 
@@ -32,6 +32,8 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
   const [results, setResults] = useState<SearchResult[]>([]);
   const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]);
   const router = useRouter();
+  const searchRef = useRef<HTMLInputElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   // Load search history from localStorage on mount
   useEffect(() => {
@@ -103,19 +105,33 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
   // Pindahkan useHistoryItem ke luar callback
   const historyItem = useHistoryItem;
 
-  // Pindahkan handleKeyDown ke dalam useCallback
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+  // Ubah tipe parameter event
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       onClose();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((prev) => 
+        prev < results.length - 1 ? prev + 1 : prev
+      );
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    } else if (e.key === 'Enter' && activeIndex >= 0) {
+      e.preventDefault();
+      const selectedResult = results[activeIndex];
+      if (selectedResult) {
+        handleSelect(selectedResult);
+      }
     }
-  }, [onClose]);
+  };
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleKeyDown]);
+  }, [activeIndex, onClose]); // Tambahkan dependencies yang dibutuhkan
 
   useEffect(() => {
     if (searchQuery) {
@@ -149,6 +165,7 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white bg-transparent border-b border-gray-200 dark:border-gray-700 focus:outline-none"
               autoFocus
+              ref={searchRef}
             />
             <button
               onClick={onClose}
@@ -201,11 +218,11 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
             {/* Search Results */}
             {results.length > 0 ? (
               <div className="space-y-2">
-                {results.map((result) => (
+                {results.map((result, index) => (
                   <button
                     key={result.id}
                     onClick={() => handleSelect(result)}
-                    className="w-full p-3 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    className={`w-full p-3 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${activeIndex === index ? 'bg-gray-200 dark:bg-gray-700' : ''}`}
                   >
                     <div className="flex items-center">
                       <div>
