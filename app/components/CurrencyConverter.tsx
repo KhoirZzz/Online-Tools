@@ -94,24 +94,16 @@ export default function CurrencyConverter() {
     setToCurrency(e.target.value);
   }, []);
 
-  // Gunakan useCallback untuk memoize fungsi konversi
-  const convertCurrency = useCallback(async () => {
-    if (!amount || !fromCurrency || !toCurrency) return;
-    
-    try {
-      // ... existing conversion logic ...
-    } catch (error) {
-      console.error('Error converting currency:', error);
-    }
-  }, [amount, fromCurrency, toCurrency]);
-
   useEffect(() => {
     if (amount && fromCurrency && toCurrency) {
       const doConversion = async () => {
         try {
-          // ... existing conversion logic ...
+          const response = await fetch(`/api/convert?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`);
+          const data = await response.json();
+          setResult(data.result);
         } catch (error) {
           console.error('Error converting currency:', error);
+          setResult(null);
         }
       };
       doConversion();
