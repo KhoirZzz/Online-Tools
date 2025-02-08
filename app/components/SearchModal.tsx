@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSearch } from '../context/SearchContext';
 import { useRouter } from 'next/navigation';
 import { 
@@ -27,13 +27,11 @@ type SearchHistory = {
 
 const MAX_HISTORY = 5; // Maksimum riwayat yang disimpan
 
-export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { searchQuery, setSearchQuery } = useSearch();
+export default function SearchModal() {
+  const { isSearchOpen, setIsSearchOpen, searchQuery, setSearchQuery } = useSearch();
   const [results, setResults] = useState<SearchResult[]>([]);
   const [searchHistory, setSearchHistory] = useState<SearchHistory[]>([]);
   const router = useRouter();
-  const searchRef = useRef<HTMLInputElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   // Load search history from localStorage on mount
   useEffect(() => {
@@ -105,33 +103,19 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
   // Pindahkan useHistoryItem ke luar callback
   const historyItem = useHistoryItem;
 
-  // Ubah tipe parameter event
-  const handleKeyDown = (e: KeyboardEvent) => {
+  // Pindahkan handleKeyDown ke dalam useCallback
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
-      onClose();
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setActiveIndex((prev) => 
-        prev < results.length - 1 ? prev + 1 : prev
-      );
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setActiveIndex((prev) => (prev > 0 ? prev - 1 : prev));
-    } else if (e.key === 'Enter' && activeIndex >= 0) {
-      e.preventDefault();
-      const selectedResult = results[activeIndex];
-      if (selectedResult) {
-        handleSelect(selectedResult);
-      }
+      setIsSearchOpen(false);
     }
-  };
+  }, [setIsSearchOpen]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [activeIndex, onClose, handleKeyDown]); // Tambahkan handleKeyDown ke dependencies
+  }, [handleKeyDown]);
 
   useEffect(() => {
     if (searchQuery) {
@@ -145,11 +129,11 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
   const handleSelect = (result: SearchResult) => {
     saveToHistory(searchQuery);
     router.push(result.url);
-    onClose();
+    setIsSearchOpen(false);
     setSearchQuery('');
   };
 
-  if (!isOpen) return null;
+  if (!isSearchOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50">
@@ -165,10 +149,9 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white bg-transparent border-b border-gray-200 dark:border-gray-700 focus:outline-none"
               autoFocus
-              ref={searchRef}
             />
             <button
-              onClick={onClose}
+              onClick={() => setIsSearchOpen(false)}
               className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
             >
               <XMarkIcon className="h-5 w-5" />
@@ -218,11 +201,11 @@ export default function SearchModal({ isOpen, onClose }: { isOpen: boolean; onCl
             {/* Search Results */}
             {results.length > 0 ? (
               <div className="space-y-2">
-                {results.map((result, index) => (
+                {results.map((result) => (
                   <button
                     key={result.id}
                     onClick={() => handleSelect(result)}
-                    className={`w-full p-3 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${activeIndex === index ? 'bg-gray-200 dark:bg-gray-700' : ''}`}
+                    className="w-full p-3 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   >
                     <div className="flex items-center">
                       <div>
