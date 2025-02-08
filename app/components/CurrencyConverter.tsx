@@ -106,8 +106,17 @@ export default function CurrencyConverter() {
   }, [amount, fromCurrency, toCurrency]);
 
   useEffect(() => {
-    convertCurrency();
-  }, [convertCurrency]);
+    if (amount && fromCurrency && toCurrency) {
+      const doConversion = async () => {
+        try {
+          // ... existing conversion logic ...
+        } catch (error) {
+          console.error('Error converting currency:', error);
+        }
+      };
+      doConversion();
+    }
+  }, [amount, fromCurrency, toCurrency]);
 
   return (
     <div className="max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">

@@ -180,6 +180,12 @@ const UNIT_CATEGORIES: UnitCategory[] = [
   },
 ];
 
+// Ganti any dengan tipe yang spesifik
+type UnitOption = {
+  value: string;
+  label: string;
+};
+
 // Definisikan tipe yang spesifik untuk menggantikan any
 type ConversionUnit = {
   value: number;
@@ -200,6 +206,7 @@ export default function UnitsPage() {
   const [fromUnit, setFromUnit] = useState<string>(selectedCategory.units[0].value);
   const [toUnit, setToUnit] = useState<string>(selectedCategory.units[1].value);
   const [result, setResult] = useState<number | null>(null);
+  const [selectedUnit, setSelectedUnit] = useState<UnitOption | null>(null);
 
   const handleConvert = () => {
     const value = parseFloat(amount);
@@ -213,6 +220,12 @@ export default function UnitsPage() {
     setFromUnit(toUnit);
     setToUnit(fromUnit);
     handleConvert();
+  };
+
+  const handleConversion = (value: number, fromUnit: string, toUnit: string) => {
+    // Implementasi konversi yang sebenarnya
+    const result = value; // Tambahkan logika konversi yang sesuai
+    return result;
   };
 
   const formatNumber = (num: number): string => {
