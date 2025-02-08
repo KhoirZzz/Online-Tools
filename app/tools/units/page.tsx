@@ -180,6 +180,14 @@ const UNIT_CATEGORIES: UnitCategory[] = [
   },
 ];
 
+// Definisikan tipe yang spesifik untuk icon
+type IconProps = React.ForwardRefExoticComponent<
+  Omit<React.SVGProps<SVGSVGElement>, "ref"> & {
+    title?: string;
+    titleId?: string;
+  } & React.RefAttributes<SVGSVGElement>
+>;
+
 // Definisikan tipe yang spesifik untuk unit
 type UnitOption = {
   value: string;
